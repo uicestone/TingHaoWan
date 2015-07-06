@@ -10,7 +10,7 @@
  */
 class WeixinAPI {
 	
-	private $token, // 微信公众账号后台 / 高级功能 / 开发模式 / 服务器配置
+	public $token, // 微信公众账号后台 / 高级功能 / 开发模式 / 服务器配置
 			$app_id, // 开发模式 / 开发者凭据
 			$app_secret, // 同上
 			$mch_id, // 微信商户ID
@@ -300,6 +300,36 @@ class WeixinAPI {
 		$user_info = json_decode($this->call($url));
 		
 		return $user_info;
+	}
+	
+	function get_jsapi_ticket(){
+		
+		$jsapi_ticket = json_decode(get_option('wp_jsapi_ticket'));
+		
+		if(!$jsapi_ticket || $jsapi_ticket->expires_at <= time()){
+			$access_token = $this->get_access_token();
+			$jsapi_ticket = json_decode($this->call('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' . $access_token . '&type=jsapi'));
+			$jsapi_ticket->expires_at = $jsapi_ticket->expires_in + time();
+			update_option('wx_jsapi_ticket', json_encode($jsapi_ticket));
+		}
+		
+		return $jsapi_ticket;
+		
+	}
+	
+	function generate_jsapi_sign($nonce_string, $timestamp){
+		$sign_data = array(
+			'noncestr'=>$nonce_string,
+			'jsapi_ticket'=>$this->get_jsapi_ticket()->ticket,
+			'timestamp'=>$timestamp,
+			'url'=>site_url() . $_SERVER['REQUEST_URI']
+		);
+		ksort($sign_data, SORT_STRING);
+		
+		$sign_string = urldecode(http_build_query($sign_data));
+		$sign = sha1($sign_string);
+		
+		return $sign;
 	}
 	
 	function generate_pay_sign(array $data){
