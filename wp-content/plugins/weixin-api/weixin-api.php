@@ -3,7 +3,7 @@
  * Plugin Name: Weixin API
  * Plugin URI: 
  * Description: 在WordPress中调用微信公众账号API，实现用户鉴权，微信支付，菜单更新等功能
- * Version: 0.4
+ * Version: 0.5
  * Author: Uice Lu
  * Author URI: https://cecilia.uice.lu/
  * License: 
@@ -190,22 +190,33 @@ class WeixinAPI {
 	
 	/**
 	 * 根据一个OAuth授权请求中的code，获得并存储用户授权信息
-	 * 通常不应直接调用此方法，而应调用get_oauth_info()
 	 */
-	function get_oauth_token($code = null){
+	function get_oauth_token($code = null, $scope = 'snsapi_base'){
 		
-		if(is_user_logged_in() && $auth_result = get_user_meta(get_current_user_id(), 'oauth_info', true)){
-			if(json_decode($auth_result)->expires_at >= time()){
-				return $auth_result->access_token;
+		if(is_user_logged_in()){
+			
+			$auth_result = json_decode(get_user_meta(get_current_user_id(), 'oauth_info', true));
+			
+			if($auth_result){
+				if($auth_result->expires_at >= time()){
+					return $auth_result;
+				}
+				else{
+					$auth_result = $this->refresh_oauth_token($auth_result->refresh_token);
+					if(isset($auth_result->access_token)){
+						update_user_meta(get_current_user_id(), 'oauth_info', json_encode($auth_result));
+						return $auth_result;
+					}
+				}
 			}
 		}
 		
-		if(is_null($code)){
-			if(empty($_GET['code'])){
-				header('Location: ' . $this->generate_oauth_url(site_url() . $_SERVER['REQUEST_URI']));
-				exit;
-			}
+		if(isset($_GET['code'])){
 			$code = $_GET['code'];
+		}
+		
+		if(is_null($code)){
+			$this->oauth_redirect(site_url() . $_SERVER['REQUEST_URI'], '', $scope);
 		}
 		
 		$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?';
@@ -226,18 +237,24 @@ class WeixinAPI {
 		
 		$auth_result->expires_at = $auth_result->expires_in + time();
 		
-		if(is_user_logged_in()){
-			update_user_meta(get_current_user_id(), 'oauth_info', json_encode($auth_result));
+		$user = get_user_by('login', $auth_result->openid);
+		
+		if(!$user){
+			$user_id = wp_insert_user(array('user_login'=>$auth_result->openid));
 		}else{
-			update_option('wx_oauth_token_' . $auth_result->access_token, json_encode($auth_result));
+			$user_id = $user->ID;
 		}
+		
+		update_user_meta($user_id, 'oauth_info', json_encode($auth_result));
+		
+		wp_set_current_user($user_id);
+		wp_set_auth_cookie($user_id, true);
 		
 		return $auth_result;
 	}
 	
 	/**
 	 * 刷新用户OAuth access token
-	 * 通常不应直接调用此方法，而应调用get_oauth_info()
 	 */
 	function refresh_oauth_token($refresh_token){
 		
@@ -253,35 +270,13 @@ class WeixinAPI {
 		
 		$auth_result = json_decode($this->call($url));
 		
+		if(empty($auth_result->access_token)){
+			return false;
+		}
+		
+		$auth_result->expires_at = time() + $auth_result->expires_in;
+		
 		return $auth_result;
-	}
-	
-	/**
-	 * 根据用户请求的access token，获得用户OAuth信息
-	 * 所谓OAuth信息，是用户和站点交互的凭据，里面包含了用户的openid，access token等
-	 * 并不包含用户的信息，我们需要根据OAuth信息，通过oauth_get_user_info()去获得
-	 */
-	function get_oauth_info($access_token = null){
-		
-		// 尝试从请求中获得access token
-		if(is_null($access_token) && isset($_GET['access_token'])){
-			$access_token = $_GET['access_token'];
-		}
-		
-		// 如果没能获得access token，我们猜这是一个OAuth授权请求，直接根据code获得OAuth信息
-		if(empty($access_token)){
-			return $this->get_oauth_token();
-		}
-		
-		$auth_info = json_decode(get_option('wx_oauth_token_' . $access_token));
-		
-		// 从数据库中拿到的access token发现是过期的，那么需要刷新
-		if($auth_info->expires_at <= time()){
-			$auth_info = $this->refresh_oauth_token($auth_info->refresh_token);
-		}
-		
-		return $auth_info;
-		
 	}
 	
 	/**
@@ -292,7 +287,7 @@ class WeixinAPI {
 		
 		$url = 'https://api.weixin.qq.com/sns/userinfo?';
 		
-		$auth_info = $this->get_oauth_info();
+		$auth_info = $this->get_oauth_token(null, 'snsapi_userinfo');
 		
 		$query_vars = array(
 			'access_token'=>$auth_info->access_token,
@@ -547,3 +542,17 @@ class WeixinAPI {
 	}
 	
 }
+
+// create place holder page, refresh rewrite on plugin active
+register_activation_hook(__FILE__, function(){
+	flush_rewrite_rules();
+	wp_insert_post(array('post_type'=>'page', 'post_title'=>'WeChat Placeholder', 'post_name'=>'wx', 'post_status'=>'publish'));
+});
+
+register_deactivation_hook(__FILE__, function(){
+	flush_rewrite_rules();
+	$page = get_posts(array('name'=>'wx', 'post_type'=>'page'))[0];
+	wp_delete_post($page->ID, true);
+});
+
+
