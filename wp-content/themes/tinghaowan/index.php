@@ -103,7 +103,7 @@ if(isset($_POST['attend'])){
 		<script src="<?= get_stylesheet_directory_uri() ?>/js/99_main.js" type="text/javascript" charset="utf-8"></script>
 
 		<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
-
+		<audio src="http://thw.unithinker.com/wp-content/uploads/2015/07/background-music.mp3" autoplay="true" hidden="true"></audio>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>		
 		<script type="text/javascript">
 			
