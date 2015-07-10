@@ -162,7 +162,7 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
  * -m-page
  */
 .m-page { position: absolute; top:0; left: 0; width:100%; z-index: 9; background: #ddd; }
-.m-page .page-con { position: relative; width: 100%; height: 100%; overflow: hidden; }
+.m-page .page-con { position: relative; width: 100%; height: 100%; background-position: center; background-size: cover; background-repeat: no-repeat; overflow: hidden; }
 .m-page.active { z-index:40; }
 .m-page.fixed { position: fixed; }
 .m-page.move {
@@ -506,40 +506,54 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
 	100%{transform: scale(2); opacity: 0.3;}
 }
 
-#page-4 .text {
-	color: white; font-size: 20pt;
-    line-height: 1.3;
-    width: 80%;
-    margin: 80% auto;
-    font-family: 'YouYuan';
+.m-page.centered .page-con {
+	background-color: #FFF;
+	background-size: 80%;
 }
 
-#page-4 .text p {
+#game-rule .text {
+	color: white;
+	font-size: 19pt;
+	line-height: 1.3;
+	width: 90%;
+	position: absolute;
+	top: 17%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	font-family: YouYuan;
+}
+
+#game-rule .text p {
 	margin-bottom: 1em;
 }
 
-#page-5 .form {
+#game-rule .form {
 	font-size: 20pt;
 	line-height: 1.3;
 	width: 90%;
-	margin: 50% auto;
+	position: absolute;
 	font-family: 'YouYuan';
+	bottom: 5%;
+	left: 0;
+	right: 0;
+	margin: auto;
 }
 
-#page-5 .form form {
+#game-rule .form form {
 	width: 100%;
 	text-align: center;
 }
 
-#page-5 .form form input {
+#game-rule .form form input {
 	background: white;
 	padding: 15px 20px;
-	width: 80%;
+	width: 90%;
 	border-radius: 9px;
-	margin-bottom: 80px;
+	margin-bottom: 25px;
 }
 
-#page-5 .form form button {
+#game-rule .form form button {
 	width: 70%;
 	padding: 15px 20px;
 	background: #32b7de;
@@ -547,10 +561,9 @@ textarea:focus,input:focus { border: 1px solid #71b643; }
 	border: none;
 	border-radius: 9px;
 	font-size: 33pt;
-	margin-top: 60px;
 }
 
-#page-5 .form .help {
+#game-rule .form .help {
 	margin-top: 20px;
 	font-size: 20pt;
 	color: #c9c9c9;

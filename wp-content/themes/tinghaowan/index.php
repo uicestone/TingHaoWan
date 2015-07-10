@@ -35,7 +35,7 @@ if(isset($_POST['attend'])){
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta http-equiv="Expires" content="-1">
 		<meta http-equiv="pragram" content="no-cache">
-		<link rel="stylesheet" type="text/css" href="<?= get_stylesheet_directory_uri() ?>/css/main.css">
+		<link rel="stylesheet" type="text/css" href="<?= get_stylesheet_directory_uri() ?>/css/main.css?v=1.2">
 		<link rel="stylesheet" type="text/css" href="<?= get_stylesheet_directory_uri() ?>/css/endpic.css">
 		<script type="text/javascript" src="<?= get_stylesheet_directory_uri() ?>/js/offline.js"></script>
 		<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">
@@ -52,31 +52,30 @@ if(isset($_POST['attend'])){
 				</div>
 			</div>
 		</section>
+		<?php if(!isset($_POST['attend'])){ ?>
 		<section class="u-arrow">
 			<p class="css_sprite01"></p>
 		</section>
-		<section class="p-ct transformNode-2d" style="height: 907px;">
-			<div class="translate-back" style="height: 907px;">
+		<?php } ?>
+		<section class="p-ct transformNode-2d">
+			<div class="translate-back">
 				<?php if(!isset($_POST['attend'])){ ?>
-				<div class="m-page m-fengye" data-page-type="info_pic3" data-statics="info_pic3" style="height:70%;">
-					<div class="page-con lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-1.jpg); background-size: cover; height: 909px; background-position: 50% 50%;"></div>
+				<div class="m-page centered">
+					<div class="page-con" data-position="50% 50%" style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-1.jpg?v=2');"></div>
 				</div>
-				<div class="m-page m-bigTxt f-hide" data-page-type="bigTxt" data-statics="info_list" style="height:70%;">
-					<div class="page-con j-txtWrap lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-2.jpg); background-size: cover; background-position: 50% 50%;"></div>
+				<div class="m-page centered f-hide">
+					<div class="page-con" data-position="50% 50%" style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-2.jpg?v=2');"></div>
 				</div>
-				<div class="m-page m-bigTxt f-hide" data-page-type="bigTxt" data-statics="info_list" style="height:70%;">
-					<div class="page-con j-txtWrap lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-3.jpg); background-size: cover; background-position: 50% 50%;"></div>
+				<div class="m-page centered f-hide">
+					<div class="page-con" data-position="50% 50%" style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-3.jpg?v=2');"></div>
 				</div>
-				<div id="page-4" class="m-page m-bigTxt f-hide" data-page-type="bigTxt" data-statics="info_list" style="height: 907px;">
-					<div class="page-con j-txtWrap lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-4.jpg); background-size: cover; background-position: 50% 50%;">
+				<div id="game-rule" class="m-page f-hide">
+					<div class="page-con"style="background-image: url('<?=get_stylesheet_directory_uri() ?>/images/page-4.jpg?v=2');">
 						<div class="text">
-							<p>1、  关注“艇好玩”微信公众号并注册，将有机会赢取万元游艇盛筵大奖；</p>
-							<p>2、  “朋友帮”——分享至朋友圈邀好友一起参与，每引入1名好友将增加抽奖机会一次；每引入10名好友，将享有“艇好玩”初次订单10%折扣优惠，累积最高5折封顶。</p>
+							<p>1、 关注“艇好玩”微信公众号并注册，将有机会赢取万元游艇盛筵大奖；</p>
+							<p>2、本次活动共设万元游艇盛筵大奖三名，奖品为全球顶尖游艇品牌意大利AZIMUT游艇夜宴，品味游艇+西餐+美女小提琴演奏的快意人生；</p>
+							<p>3、  “朋友帮”——分享至朋友圈邀好友一起参与，每引入1名好友将增加抽奖机会一次；每引入10名好友，将享有“艇好玩”初次订单10%折扣优惠，累积最高5折封顶。</p>
 						</div>
-					</div>
-				</div>
-				<div id="page-5" class="m-page m-bigTxt f-hide" data-page-type="bigTxt" data-statics="info_list" style="height: 907px;">
-					<div class="page-con j-txtWrap lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-4.jpg); background-size: cover; background-position: 50% 50%;">
 						<div class="form">
 							<form method="post">
 								<input type="text" name="name" placeholder="姓名">
@@ -89,12 +88,11 @@ if(isset($_POST['attend'])){
 								<p>分享至朋友圈，凡好友参与即可增加中奖几率</p>
 							</div>
 						</div>
-
 					</div>
 				</div>
 				<?php }else{ ?>
-				<div id="page-6" class="m-page m-fengye" data-page-type="bigTxt" data-statics="info_list" style="height:70%;">
-					<div class="page-con j-txtWrap lazy-finish" data-position="50% 50%" data-size="cover" style="background-image: url(<?= get_stylesheet_directory_uri() ?>/images/page-5.jpg); background-size: cover; background-position: 50% 50%;"></div>
+				<div class="m-page">
+					<div class="page-con lazy-finish"style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-5.jpg');"></div>
 				</div>
 				<?php } ?>
 			</div>
