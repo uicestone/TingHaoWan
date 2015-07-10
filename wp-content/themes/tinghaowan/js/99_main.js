@@ -1547,7 +1547,7 @@ var car2 = {
 
 	// 对象私有变量刷新
 	refresh	: function(){
-		$(window).height() = $(window).height();
+//		$(window).height() = $(window).height();
 		car2._windowWidth = $(window).width();
 	},
 
@@ -1595,10 +1595,10 @@ var car2 = {
 
  	// 蒙板插件初始化函数处理
  	cover_draw : function(node,url,canvas_url,type,w,h,callback){
-		if(node.style.display.indexOf('none')>-1) return;
+//		if(node.style.display.indexOf('none')>-1) return;
 		
-		var lottery = new Lottery(node, canvas_url, type, w, h, callback);
-		lottery.init();
+//		var lottery = new Lottery(node, canvas_url, type, w, h, callback);
+//		lottery.init();
 	},
 
     menban_callback: function(){

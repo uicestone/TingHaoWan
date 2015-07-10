@@ -99,9 +99,7 @@ if(isset($_POST['attend'])){
 				<?php } ?>
 			</div>
 		</section>
-		<section class="u-pageLoading">
-			<img src="<?= get_stylesheet_directory_uri() ?>/images/load.gif" alt="loading">
-		</section>
+
 		<script src="<?= get_stylesheet_directory_uri() ?>/js/init.mix.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<?= get_stylesheet_directory_uri() ?>/js/coffee.js" type="text/javascript" charset="utf-8"></script>
 		<script src="<?= get_stylesheet_directory_uri() ?>/js/99_main.js" type="text/javascript" charset="utf-8"></script>
