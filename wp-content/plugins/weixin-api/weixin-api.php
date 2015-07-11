@@ -534,6 +534,13 @@ class WeixinAPI {
 		return $menu;
 	}
 	
+	function refresh_menu(){
+		$data = json_decode(get_option('wx_menu'));
+		$this->remove_menu();
+		$this->create_menu($data);
+		return $this->get_menu();
+	}
+	
 	function onmessage($type, $callback){
 		
 		if(!isset($GLOBALS["HTTP_RAW_POST_DATA"])){
@@ -577,12 +584,15 @@ class WeixinAPI {
 register_activation_hook(__FILE__, function(){
 	flush_rewrite_rules();
 	wp_insert_post(array('post_type'=>'page', 'post_title'=>'WeChat Placeholder', 'post_name'=>'wx', 'post_status'=>'publish'));
+	wp_insert_post(array('post_type'=>'page', 'post_title'=>'WeChat Menu Refresh Placeholder', 'post_name'=>'wx-refresh-menu', 'post_status'=>'publish'));
 });
 
 register_deactivation_hook(__FILE__, function(){
 	flush_rewrite_rules();
-	$page = get_posts(array('name'=>'wx', 'post_type'=>'page'))[0];
-	wp_delete_post($page->ID, true);
+	$page_wx = get_posts(array('name'=>'wx', 'post_type'=>'page'))[0];
+	$page_wx_refresh_menu = get_posts(array('name'=>'wx-refresh-menu', 'post_type'=>'page'))[0];
+	wp_delete_post($page_wx->ID, true);
+	wp_delete_post($page_wx_refresh_menu->ID, true);
 });
 
 
