@@ -92,7 +92,9 @@ if(isset($_POST['attend'])){
 				</div>
 				<?php }else{ ?>
 				<div class="m-page">
-					<div class="page-con lazy-finish"style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-5.jpg');"></div>
+					<div class="page-con lazy-finish"style="background-image: url('<?=get_stylesheet_directory_uri()?>/images/page-5.jpg?ver=2');">
+						<img class="qr-code" src="<?=get_stylesheet_directory_uri()?>/images/qr-code.png" style="display: block; margin: 50% auto;" />
+					</div>
 				</div>
 				<?php } ?>
 			</div>
@@ -103,7 +105,6 @@ if(isset($_POST['attend'])){
 		<script src="<?= get_stylesheet_directory_uri() ?>/js/99_main.js" type="text/javascript" charset="utf-8"></script>
 
 		<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
-		<audio src="http://thw.unithinker.com/wp-content/uploads/2015/07/background-music.mp3" autoplay="true" hidden="true"></audio>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>		
 		<script type="text/javascript">
 			
@@ -122,7 +123,7 @@ if(isset($_POST['attend'])){
 				wx.onMenuShareTimeline({
 					title: '<?=get_bloginfo('site_name')?>', // 分享标题
 					link: '<?=site_url()?>/?from_username=<?=$user_info->openid?>', // 分享链接
-					imgUrl: '', // 分享图标
+					imgUrl: '<?=get_stylesheet_directory_uri()?>/images/logo.jpg', // 分享图标
 					success: function () {
 						
 					},
@@ -135,7 +136,7 @@ if(isset($_POST['attend'])){
 					title: '<?=get_bloginfo('site_name')?>', // 分享标题
 					desc: '<?=site_url()?>/?from_username=<?=$user_info->openid?>',
 					link: '<?=site_url()?>/?from_username=<?=$user_info->openid?>', // 分享链接
-					imgUrl: '', // 分享图标
+					imgUrl: '<?=get_stylesheet_directory_uri()?>/images/logo.jpg', // 分享图标
 					success: function () {
 						
 					},

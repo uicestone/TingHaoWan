@@ -60,7 +60,7 @@ body h1,body h2,body h3,body h4,body h5,body h6,body strong,body em {font-weight
 textarea:focus,input:focus { border: 1px solid #71b643; }
 
 /*sprite图片合并*/
-.css_sprite01 { background-image:url(../images/css_sprite01.png)!important;  background-repeat: no-repeat!important; } 
+.css_sprite01 { background-image:url('../images/css_sprite01.png?var=2')!important;  background-repeat: no-repeat!important; } 
 
 /**
  * = function 功能样式
